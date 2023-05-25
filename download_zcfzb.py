@@ -1,10 +1,13 @@
 import pandas as pd
 from eastmoney import f10
-import json
 import os
+import datetime
+from utils.date_utils import get_last_days_of_previous_quarters
 
 # 读取CSV文件
 df = pd.read_csv('tdx_stocks.csv', dtype={'股票代码': str})
+today = datetime.date.today()
+dates = get_last_days_of_previous_quarters(today.strftime("%Y-%m-%d"), 5)
 
 # 创建保存数据的目录
 if not os.path.exists('zcfzb'):
@@ -16,7 +19,7 @@ for index, row in df.iterrows():
     stock_code = row['交易所简码'] + row['股票代码']
 
     # 请求资产负债表数据
-    data = f10.zcfzb(code=stock_code)
+    data = f10.zcfzb(code=stock_code, dates=dates)
 
     # 将data字段转换为DataFrame并保存为CSV文件
     try:
