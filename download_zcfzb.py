@@ -3,6 +3,7 @@ from eastmoney import f10
 import os
 import datetime
 from utils.date_utils import get_last_days_of_previous_quarters
+from tqdm import tqdm
 
 # 读取CSV文件
 df = pd.read_csv('tdx_stocks.csv', dtype={'股票代码': str})
@@ -13,8 +14,11 @@ dates = get_last_days_of_previous_quarters(today.strftime("%Y-%m-%d"), 5)
 if not os.path.exists('zcfzb'):
     os.makedirs('zcfzb')
 
+# 获取df的行数
+total_rows = len(df)
+
 # 循环遍历每行数据
-for index, row in df.iterrows():
+for index, row in tqdm(df.iterrows(), total=total_rows):
     # 拼接得到股票代码
     stock_code = row['交易所简码'] + row['股票代码']
 
