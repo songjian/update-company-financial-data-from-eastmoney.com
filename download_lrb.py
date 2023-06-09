@@ -8,7 +8,7 @@ from tqdm import tqdm
 # 读取CSV文件
 df = pd.read_csv('tdx_stocks.csv', dtype={'股票代码': str})
 today = datetime.date.today()
-dates = get_last_days_of_previous_quarters('2020-12-31', 5)
+dates = get_last_days_of_previous_quarters(today.strftime("%Y-%m-%d"), 5)
 
 # 创建保存数据的目录
 if not os.path.exists('lrb'):
