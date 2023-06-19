@@ -23,10 +23,10 @@ for index, row in tqdm(df.iterrows(), total=total_rows):
     stock_code = row['交易所简码'] + row['股票代码']
 
     # 请求资产负债表数据
-    data = f10.zcfzb(code=stock_code, dates=dates)
+    data = f10.zcfzb(code=stock_code, dates=dates, companyType='4')
 
-    # 将data字段转换为DataFrame并保存为CSV文件
+    # 将data字段转换为DataFrame并保存为CSV文件，如果文件存在则追加
     try:
-        pd.DataFrame(data['data']).to_csv(f'zcfzb/{stock_code}.csv', index=False)
+        pd.DataFrame(data['data']).to_csv(f'zcfzb/{stock_code}.csv', index=False, mode='a', header=not os.path.exists(f'lrb/{stock_code}.csv'))
     except KeyError:
         print(f"股票代码{stock_code}的资产负债表数据不存在")
